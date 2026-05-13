@@ -242,5 +242,45 @@ Hệ thống chặn dữ liệu sai.
 ### Input
 
 ```sql
-C
+CALL AddInventory(10, 0);
 ```
+
+### Kết quả mong muốn
+
+| stock_quantity |
+| -------------- |
+| Không thay đổi |
+
+---
+
+# 9. Kết luận
+
+Lỗi của hệ thống không nằm ở cú pháp SQL mà nằm ở việc thiếu kiểm tra dữ liệu đầu vào.
+
+Nguyên nhân chính:
+
+* Procedure không validate dữ liệu trước khi UPDATE.
+
+Giải pháp:
+
+* Chỉ cho phép UPDATE khi `p_quantity > 0`.
+
+Sau khi sửa:
+
+* Hệ thống không còn bị giảm kho ngoài ý muốn.
+* Dữ liệu vật tư được bảo vệ.
+* Tránh sai lệch kiểm kê và báo cáo tồn kho.
+
+---
+
+# 10. Tổng kết kỹ thuật
+
+| Thành phần       | Nội dung                            |
+| ---------------- | ----------------------------------- |
+| Loại lỗi         | Business Logic Validation           |
+| Mức độ ảnh hưởng | Cao                                 |
+| Nguyên nhân      | Không kiểm tra dữ liệu đầu vào      |
+| Giải pháp        | Validate `p_quantity > 0`           |
+| Kỹ thuật sử dụng | IF condition trong Stored Procedure |
+| Kết quả sau sửa  | Bảo vệ dữ liệu tồn kho              |
+
